@@ -31,14 +31,14 @@
             background-color: var(--bg-color);
             color: var(--text-color);
             font-family: 'Inter Tight', sans-serif;
-            min-height: 100vh;
+            height: 100vh;
             width: 100vw;
             position: relative;
-            overflow-x: hidden;
+            overflow: hidden; /* Empêche le scroll global sur desktop */
             -webkit-font-smoothing: antialiased;
         }
 
-        /* --- MENU --- */
+        /* --- BOUTON MENU --- */
         .menu-btn {
             position: fixed;
             top: 30px;
@@ -55,49 +55,126 @@
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             border-radius: 50%;
-            border: none; /* Reset button style */
+            border: none;
             color: var(--text-color);
         }
 
-        .menu-btn .material-symbols-outlined { font-size: 28px; }
         .menu-btn:hover { transform: scale(1.1); background-color: rgba(0, 0, 0, 0.05); }
+        .menu-btn .material-symbols-outlined { font-size: 28px; }
 
-        /* --- OVERLAY MENU --- */
-        .menu-overlay {
+        /* --- MENU CAPSULE --- */
+        .nav-capsule {
             position: fixed;
-            inset: 0; /* Remplacement moderne de top/left/width/height */
-            background-color: rgba(255, 255, 255, 0.704);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
+            top: 90px;
+            right: 30px;
+            width: 260px;
+            background-color: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-radius: 24px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
             z-index: var(--menu-z);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 40px;
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.4s ease, visibility 0.4s ease;
-            will-change: opacity, visibility;
+            transform: translateY(-10px) scale(0.95);
+            transform-origin: top right;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .menu-overlay.active { opacity: 1; visibility: visible; }
 
-        .menu-link {
-            font-size: 3rem;
-            font-weight: 500;
+        .nav-capsule.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+        }
+
+        .capsule-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .capsule-link {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             text-decoration: none;
             color: var(--text-color);
-            transition: color 0.3s ease, transform 0.2s ease;
+            font-size: 1.1rem;
+            font-weight: 500;
+            padding: 10px 15px;
+            border-radius: 12px;
+            transition: background-color 0.2s ease, color 0.2s ease;
             cursor: pointer;
+            background: none;
+            border: none;
+            width: 100%;
+            text-align: left;
+            font-family: 'Inter Tight', sans-serif;
         }
-        .menu-link:hover { color: var(--blue-color); }
 
-        /* --- LAYOUT PRINCIPAL --- */
+        .capsule-link:hover {
+            background-color: rgba(255, 255, 255, 0.5);
+            color: var(--blue-color);
+        }
+
+        /* Sous-menu Projets */
+        .chevron {
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .project-trigger[aria-expanded="true"] .chevron {
+            transform: rotate(180deg);
+        }
+
+        .submenu {
+            list-style: none;
+            margin-left: 15px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            border-left: 2px solid rgba(0,0,0,0.05);
+        }
+
+        .submenu.open {
+            max-height: 200px;
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+
+        .submenu li a {
+            display: block;
+            text-decoration: none;
+            color: #666;
+            font-size: 0.95rem;
+            padding: 8px 15px;
+            transition: color 0.2s ease, transform 0.2s ease;
+        }
+
+        .submenu li a:hover {
+            color: var(--blue-color);
+            transform: translateX(5px);
+        }
+
+        .submenu .all-projects {
+            font-weight: 600;
+            color: var(--text-color);
+            font-size: 0.85rem;
+            margin-top: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* --- LAYOUT PRINCIPAL (SPLIT SCREEN) --- */
         .main-content {
             width: 100%;
-            max-width: 96%; 
-            margin: 0 auto;
-            padding: 120px 0 100px 0;
+            height: 100vh;
+            max-width: 100%;
+            margin: 0;
+            padding: 0;
             position: relative;
             z-index: 1;
         }
@@ -105,19 +182,23 @@
         .project-grid {
             display: grid;
             grid-template-columns: 1fr 2fr; 
-            gap: 80px; 
-            align-items: start; /* Crucial pour le sticky */
+            height: 100%;
+            width: 100%;
         }
 
-        /* --- COLONNE GAUCHE (Sticky Text) --- */
+        /* --- COLONNE GAUCHE (Scrollable) --- */
         .info-column {
-            position: sticky;
-            top: 100px;
+            position: relative;
+            height: 100vh;
+            overflow-y: auto;
+            padding: 120px 40px 40px 60px;
             display: flex;
             flex-direction: column;
             gap: 50px;
-            padding-right: 20px;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
         }
+        .info-column::-webkit-scrollbar { display: none; }
 
         .project-title h1 {
             font-size: 4.5rem;
@@ -186,12 +267,18 @@
             white-space: nowrap;
         }
 
-        /* --- COLONNE DROITE (Visuels) --- */
+        /* --- COLONNE DROITE (Scrollable) --- */
         .visual-column {
+            height: 100vh;
+            overflow-y: auto;
+            padding: 120px 60px 40px 40px;
             display: flex;
             flex-direction: column;
             gap: 40px; 
+            scrollbar-width: none;
+            -ms-overflow-style: none;
         }
+        .visual-column::-webkit-scrollbar { display: none; }
 
         /* Images */
         .main-image-container, .secondary-item {
@@ -199,6 +286,7 @@
             border-radius: 6px;
             overflow: hidden;
             position: relative;
+            flex-shrink: 0;
         }
 
         .main-image-container {
@@ -214,7 +302,8 @@
             object-fit: cover;
             display: block;
             transition: transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
-            will-change: transform; /* Optimisation GPU */
+            will-change: transform;
+            cursor: zoom-in; /* Ajout */
         }
         .main-image-container:hover .main-image { transform: scale(1.03); }
 
@@ -256,61 +345,153 @@
             display: block;
             transition: transform 0.5s ease;
             will-change: transform;
+            cursor: zoom-in; /* Ajout */
         }
         
         .secondary-item:hover .secondary-image { transform: scale(1.05); }
 
-        /* --- NEXT PROJECT --- */
-        .next-project-area {
-            margin-top: 120px;
-            padding-top: 60px;
-            border-top: 1px solid rgba(0,0,0,0.08);
+        /* --- INDEX DES PROJETS --- */
+        .project-index {
+            padding-top: 30px;
+            border-top: 1px solid var(--light-gray);
             display: flex;
-            justify-content: flex-end;
-            align-items: center;
+            flex-direction: column;
+            gap: 15px; 
         }
-        
-        .next-link {
+
+        .project-index.mobile-only {
+            margin-top: 60px; 
+            border-top: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .index-label {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            color: var(--highlight-color);
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            margin-bottom: 5px;
+        }
+
+        .index-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
             display: flex;
-            align-items: center;
-            gap: 20px; 
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .index-link {
+            font-size: 1rem;
             text-decoration: none;
-            color: var(--text-color);
-            transition: color 0.3s ease;
+            color: var(--highlight-color);
+            transition: color 0.2s ease;
+            display: block;
+            width: fit-content;
         }
 
-        .next-label {
-            font-size: 3rem;
-            font-weight: 600;
-            letter-spacing: -0.02em;
-            transition: color 0.3s;
+        .index-link:hover { color: var(--text-color); }
+        .index-link.current-project { color: var(--text-color); font-weight: 600; }
+
+        .mobile-only { display: none; }
+        .desktop-only { display: flex; }
+        .next-project-area { display: none !important; }
+
+        /* --- LIGHTBOX (Style avec Navigation) --- */
+        .lightbox-overlay {
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            cursor: zoom-out;
+            backdrop-filter: blur(5px);
         }
 
-        .arrow-icon {
-            font-size: 3.5rem;
-            font-weight: 300; 
-            transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), color 0.3s;
+        .lightbox-overlay.active { opacity: 1; visibility: visible; }
+
+        .lightbox-image {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            border-radius: 4px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            transform: scale(0.95);
+            transition: transform 0.3s ease, opacity 0.2s ease;
         }
 
-        .next-link:hover .next-label,
-        .next-link:hover .arrow-icon { color: var(--blue-color); }
-        .next-link:hover .arrow-icon { transform: translateX(15px); }
+        .lightbox-image.fade-out {
+            opacity: 0.5;
+            transform: scale(0.98);
+        }
+
+        .lightbox-overlay.active .lightbox-image { transform: scale(1); }
+
+        /* Navigation Lightbox */
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 2001;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+            backdrop-filter: blur(4px);
+        }
+
+        .lightbox-nav:hover {
+            background-color: rgba(255, 255, 255, 0.25);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .lightbox-nav.prev { left: 30px; }
+        .lightbox-nav.next { right: 30px; }
+        
+        .lightbox-nav .material-symbols-outlined { font-size: 32px; }
+
+        @media (max-width: 600px) {
+            .lightbox-nav { width: 40px; height: 40px; }
+            .lightbox-nav.prev { left: 10px; }
+            .lightbox-nav.next { right: 10px; }
+        }
 
         /* --- RESPONSIVE --- */
         @media (max-width: 1024px) {
-            .project-grid { grid-template-columns: 1fr; gap: 60px; }
-            .info-column { position: relative; top: 0; max-width: 100%; padding-right: 0; }
+            body { overflow: auto; height: auto; }
+            .main-content { height: auto; padding: 100px 20px; }
+            .project-grid { grid-template-columns: 1fr; gap: 60px; display: block; height: auto; }
+            .info-column { height: auto; overflow: visible; padding: 0 0 40px 0; position: relative; top: 0; }
+            .visual-column { height: auto; overflow: visible; padding: 0; }
             .project-title h1 { font-size: 3.5rem; }
+            .desktop-only { display: none; }
+            .mobile-only { display: flex; }
         }
 
         @media (max-width: 600px) {
+            .nav-capsule {
+                right: 20px;
+                width: calc(100% - 40px);
+            }
             .main-content { padding: 100px 20px; max-width: 100%; }
             .project-title h1 { font-size: 2.5rem; }
             .project-subtitle { font-size: 1.2rem; }
             .meta-grid { grid-template-columns: 1fr; }
             .secondary-grid { grid-template-columns: 1fr; }
-            .next-label { font-size: 2rem; }
-            .arrow-icon { font-size: 2.5rem; }
+            .menu-btn { top: 20px; right: 20px; }
         }
     </style>
 </head>
@@ -320,11 +501,26 @@
         <span class="material-symbols-outlined" id="menuIcon">menu</span>
     </button>
 
-    <nav class="menu-overlay" id="menuOverlay" aria-hidden="true">
-        <a href="index.html" class="menu-link">Accueil</a>
-        <a href="project.html" class="menu-link">Projets</a>
-        <a href="about.html" class="menu-link">À Propos</a>
-        <a href="contact.html" class="menu-link">Contact</a>
+    <nav class="nav-capsule" id="navCapsule" aria-hidden="true">
+        <ul class="capsule-list">
+            <li><a href="index.html" class="capsule-link">Accueil</a></li>
+            
+            <li class="has-submenu">
+                <button class="capsule-link project-trigger" id="projectBtn" aria-expanded="false">
+                    Projets 
+                    <span class="material-symbols-outlined chevron">expand_more</span>
+                </button>
+                <ul class="submenu" id="projectSubmenu">
+                    <li><a href="enjoytheride.html">Enjoy The Ride</a></li>
+                    <li><a href="trinityringcartier.html">Cartier Trinity Ring</a></li>
+                    <li><a href="cgivisual.html">CGI Visual</a></li>
+                    <li><a href="project.html" class="all-projects">Voir tout →</a></li>
+                </ul>
+            </li>
+
+            <li><a href="about.html" class="capsule-link">À Propos</a></li>
+            <li><a href="contact.html" class="capsule-link">Contact</a></li>
+        </ul>
     </nav>
 
     <main class="main-content">
@@ -337,7 +533,7 @@
                 </div>
 
                 <div class="project-description">
-                    <p>Développement de l’identité web de l’agence et conception d'une page de présentation. Création d’une identité graphique alignée avec l’univers de l’entreprise et déclinable de manière cohérente sur l’ensemble des supports digitaux.</p>
+                    <p>Développement de l’identité web et conception de la page de présentation de l’agence où j’ai effectué mon stage. Création d’une identité graphique cohérente, en harmonie avec l’univers de l’entreprise et déclinable sur l’ensemble des supports digitaux.</p>
                 </div>
 
                 <div class="tags-container">
@@ -364,6 +560,20 @@
                         <span class="meta-value">Graphiste / UI Designer</span>
                     </div>
                 </div>
+
+                <div class="project-index desktop-only">
+                    <span class="index-label">Tous les projets</span>
+                    <ul class="index-list">
+                        <li><a href="imageia.html" class="index-link">Image Gen IA</a></li>
+                        <li><a href="data_viz.html" class="index-link">DATA_VIZ</a></li>
+                        <li><a href="trinityringcartier.html" class="index-link">Trinity Ring</a></li>
+                        <li><a href="ptitchef.html" class="index-link current-project">Made In Work</a></li>
+                        <li><a href="budl.html" class="index-link">BUDL</a></li>
+                        <li><a href="enjoytheride.html" class="index-link">Enjoy The Ride</a></li>
+                        <li><a href="cltwinter.html" class="index-link">CLT Winter Calendar</a></li>
+                        <li><a href="cgivisual.html" class="index-link">CGI Visual</a></li>
+                    </ul>
+                </div>
             </header>
 
             <section class="visual-column">
@@ -383,50 +593,180 @@
                     </figure>
                 </div>
                 
-                <div class="next-project-area">
-                    <a href="budl.html" class="next-link" aria-label="Projet suivant : BUDL">
-                        <span class="next-label">BUDL</span>
-                        <span class="material-symbols-outlined arrow-icon">arrow_forward</span>
-                    </a>
+                <div class="project-index mobile-only">
+                    <span class="index-label">Tous les projets</span>
+                    <ul class="index-list">
+                        <li><a href="imageia.html" class="index-link">Image Gen IA</a></li>
+                        <li><a href="data_viz.html" class="index-link">DATA_VIZ</a></li>
+                        <li><a href="trinityringcartier.html" class="index-link">Trinity Ring</a></li>
+                        <li><a href="ptitchef.html" class="index-link current-project">Made In Work</a></li>
+                        <li><a href="budl.html" class="index-link">BUDL</a></li>
+                        <li><a href="enjoytheride.html" class="index-link">Enjoy The Ride</a></li>
+                        <li><a href="cltwinter.html" class="index-link">CLT Winter Calendar</a></li>
+                        <li><a href="cgivisual.html" class="index-link">CGI Visual</a></li>
+                    </ul>
                 </div>
             </section>
 
         </article>
     </main>
 
+    <div class="lightbox-overlay" id="lightbox" aria-hidden="true" role="dialog">
+        <button class="lightbox-nav prev" id="prevBtn" aria-label="Image précédente">
+            <span class="material-symbols-outlined">chevron_left</span>
+        </button>
+        
+        <img src="" alt="Zoom sur l'image" class="lightbox-image" id="lightboxImg">
+        
+        <button class="lightbox-nav next" id="nextBtn" aria-label="Image suivante">
+            <span class="material-symbols-outlined">chevron_right</span>
+        </button>
+    </div>
+
     <script>
-    // --- GESTION DU MENU OPTIMISÉE ---
+    // --- GESTION DU MENU CAPSULE ---
     const menuBtn = document.getElementById('menuBtn');
-    const menuOverlay = document.getElementById('menuOverlay');
+    const navCapsule = document.getElementById('navCapsule');
     const menuIcon = document.getElementById('menuIcon');
+    const projectBtn = document.getElementById('projectBtn');
+    const projectSubmenu = document.getElementById('projectSubmenu');
+    
     let isMenuOpen = false;
 
+    // 1. Ouvrir / Fermer le menu
     function toggleMenu() {
         isMenuOpen = !isMenuOpen;
-        
-        // Gestion Accessibilité (ARIA)
         menuBtn.setAttribute('aria-expanded', isMenuOpen);
-        menuOverlay.setAttribute('aria-hidden', !isMenuOpen);
-
+        navCapsule.setAttribute('aria-hidden', !isMenuOpen);
+        
         if (isMenuOpen) {
-            menuOverlay.classList.add('active');
-            menuIcon.textContent = 'close'; 
-            document.body.style.overflow = 'hidden'; // Empêche le scroll
+            navCapsule.classList.add('active');
+            menuIcon.textContent = 'close';
+            menuBtn.style.backgroundColor = 'rgba(0, 0, 0, 0.1)'; 
         } else {
-            menuOverlay.classList.remove('active');
-            menuIcon.textContent = 'menu'; 
-            document.body.style.overflow = ''; // Réactive le scroll
+            navCapsule.classList.remove('active');
+            menuIcon.textContent = 'menu';
+            menuBtn.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+            closeProjects(); 
         }
     }
 
+    // 2. Accordéon Projets
+    function toggleProjects(e) {
+        e.preventDefault(); 
+        const isExpanded = projectBtn.getAttribute('aria-expanded') === 'true';
+        
+        if (!isExpanded) {
+            projectSubmenu.classList.add('open');
+            projectBtn.setAttribute('aria-expanded', 'true');
+            projectBtn.style.color = 'var(--blue-color)';
+        } else {
+            closeProjects();
+        }
+    }
+
+    function closeProjects() {
+        projectSubmenu.classList.remove('open');
+        projectBtn.setAttribute('aria-expanded', 'false');
+        projectBtn.style.color = ''; 
+    }
+
+    // Listeners
     menuBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         toggleMenu();
     });
 
-    // Fermeture avec la touche Echap (Accessibilité)
+    projectBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleProjects(e);
+    });
+
+    document.addEventListener('click', (e) => {
+        if (isMenuOpen && !navCapsule.contains(e.target) && !menuBtn.contains(e.target)) {
+            toggleMenu();
+        }
+    });
+
+    // --- LIGHTBOX AVEC NAVIGATION ---
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightboxImg');
+    const zoomableImages = document.querySelectorAll('.main-image, .secondary-image');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    
+    // Création d'un tableau à partir de la NodeList
+    const imagesArray = Array.from(zoomableImages);
+    let currentIndex = 0;
+
+    // Ouvrir la lightbox
+    function openLightbox(index) {
+        currentIndex = index;
+        updateLightboxImage();
+        lightbox.classList.add('active');
+        lightbox.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden'; 
+    }
+
+    // Mise à jour de l'image
+    function updateLightboxImage() {
+        const img = imagesArray[currentIndex];
+        
+        lightboxImg.classList.add('fade-out');
+        setTimeout(() => {
+            lightboxImg.src = img.src;
+            lightboxImg.alt = img.alt;
+            lightboxImg.classList.remove('fade-out');
+        }, 150);
+    }
+
+    // Événements sur les images
+    zoomableImages.forEach((img, index) => {
+        img.addEventListener('click', (e) => {
+            e.stopPropagation();
+            openLightbox(index);
+        });
+    });
+
+    // Bouton Suivant
+    function showNext(e) {
+        if(e) e.stopPropagation();
+        currentIndex = (currentIndex + 1) % imagesArray.length;
+        updateLightboxImage();
+    }
+
+    // Bouton Précédent
+    function showPrev(e) {
+        if(e) e.stopPropagation();
+        currentIndex = (currentIndex - 1 + imagesArray.length) % imagesArray.length;
+        updateLightboxImage();
+    }
+
+    nextBtn.addEventListener('click', showNext);
+    prevBtn.addEventListener('click', showPrev);
+
+    // Fermeture
+    function closeLightbox() {
+        lightbox.classList.remove('active');
+        lightbox.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = ''; 
+    }
+
+    lightbox.addEventListener('click', (e) => {
+        if(e.target === lightbox) {
+            closeLightbox();
+        }
+    });
+
+    // Navigation Clavier
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && isMenuOpen) toggleMenu();
+        if (lightbox.classList.contains('active')) {
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowRight') showNext();
+            if (e.key === 'ArrowLeft') showPrev();
+        } else {
+            if (e.key === 'Escape' && isMenuOpen) toggleMenu();
+        }
     });
     </script>
 </body>
