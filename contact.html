@@ -26,7 +26,7 @@
         :root {
             --bg-color: #ffffff;
             --text-color: #000000;
-            --highlight-color: #888888;
+            --highlight-color: #2e2e2e;
             --blue-color: #388BFF;
             --menu-z: 1000;
         }
@@ -91,7 +91,7 @@
             100% { opacity: 0.4; transform: scale(1) rotate(0deg); }
         }
 
-        /* --- MENU --- */
+        /* --- BOUTON MENU --- */
         .menu-btn {
             position: fixed;
             top: 30px;
@@ -112,35 +112,118 @@
             color: var(--text-color);
         }
         .menu-btn:hover { transform: scale(1.1); background-color: rgba(0, 0, 0, 0.05); }
+        .menu-btn .material-symbols-outlined { font-size: 30px; }
 
-        /* --- OVERLAY MENU --- */
-        .menu-overlay {
+        /* --- MENU CAPSULE (NOUVEAU STYLE) --- */
+        .nav-capsule {
             position: fixed;
-            inset: 0;
-            background-color: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
+            top: 90px;
+            right: 30px;
+            width: 260px;
+            
+            /* Effet Verre Dépoli */
+            background-color: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            
+            border-radius: 24px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
             z-index: var(--menu-z);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 40px;
+            
+            /* Animation d'entrée */
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.4s ease, visibility 0.4s ease;
+            transform: translateY(-10px) scale(0.95);
+            transform-origin: top right;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .menu-overlay.active { opacity: 1; visibility: visible; }
-       
-        .menu-link { 
-            font-size: 3rem; 
-            font-weight: 500; 
-            text-decoration: none; 
-            color: var(--text-color); 
-            transition: color 0.3s ease, transform 0.2s ease; 
+
+        .nav-capsule.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+        }
+
+        .capsule-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .capsule-link {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            text-decoration: none;
+            color: var(--text-color);
+            font-size: 1.1rem;
+            font-weight: 500;
+            padding: 10px 15px;
+            border-radius: 12px;
+            transition: background-color 0.2s ease, color 0.2s ease;
             cursor: pointer;
+            background: none;
+            border: none;
+            width: 100%;
+            text-align: left;
+            font-family: 'Inter Tight', sans-serif;
         }
-        .menu-link:hover { color: var(--blue-color); }
+
+        .capsule-link:hover {
+            background-color: rgba(255, 255, 255, 0.5);
+            color: var(--blue-color);
+        }
+
+        /* Sous-menu Projets */
+        .chevron {
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .project-trigger[aria-expanded="true"] .chevron {
+            transform: rotate(180deg);
+        }
+
+        .submenu {
+            list-style: none;
+            margin-left: 15px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            border-left: 2px solid rgba(0,0,0,0.05);
+        }
+
+        .submenu.open {
+            max-height: 200px;
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+
+        .submenu li a {
+            display: block;
+            text-decoration: none;
+            color: #666;
+            font-size: 0.95rem;
+            padding: 8px 15px;
+            transition: color 0.2s ease, transform 0.2s ease;
+        }
+
+        .submenu li a:hover {
+            color: var(--blue-color);
+            transform: translateX(5px);
+        }
+
+        .submenu .all-projects {
+            font-weight: 600;
+            color: var(--text-color);
+            font-size: 0.85rem;
+            margin-top: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
 
         /* --- LAYOUT --- */
         .container {
@@ -302,6 +385,14 @@
                 flex: none;
             }
         }
+        
+        @media (max-width: 600px) {
+            .nav-capsule {
+                right: 20px;
+                width: calc(100% - 40px);
+            }
+            .menu-btn { top: 20px; right: 20px; }
+        }
     </style>
 </head>
 <body>
@@ -309,14 +400,29 @@
     <div class="stickers-container" id="stickersContainer" aria-hidden="true"></div>
 
     <button class="menu-btn" id="menuBtn" aria-label="Ouvrir le menu" aria-expanded="false">
-        <span class="material-symbols-outlined">menu</span>
+        <span class="material-symbols-outlined" id="menuIcon">menu</span>
     </button>
 
-    <nav class="menu-overlay" id="menuOverlay" aria-hidden="true">
-        <a href="index.html" class="menu-link">Accueil</a>
-        <a href="project.html" class="menu-link">Projets</a>
-        <a href="about.html" class="menu-link">À Propos</a>
-        <a href="contact.html" class="menu-link">Contact</a>
+    <nav class="nav-capsule" id="navCapsule" aria-hidden="true">
+        <ul class="capsule-list">
+            <li><a href="index.html" class="capsule-link">Accueil</a></li>
+            
+            <li class="has-submenu">
+                <button class="capsule-link project-trigger" id="projectBtn" aria-expanded="false">
+                    Projets 
+                    <span class="material-symbols-outlined chevron">expand_more</span>
+                </button>
+                <ul class="submenu" id="projectSubmenu">
+                    <li><a href="enjoytheride.html">Enjoy The Ride</a></li>
+                    <li><a href="trinityringcartier.html">Cartier Trinity Ring</a></li>
+                    <li><a href="cgivisual.html">CGI Visual</a></li>
+                    <li><a href="project.html" class="all-projects">Voir tout →</a></li>
+                </ul>
+            </li>
+
+            <li><a href="about.html" class="capsule-link">À Propos</a></li>
+            <li><a href="contact.html" class="capsule-link">Contact</a></li>
+        </ul>
     </nav>
 
     <main class="container">
@@ -325,7 +431,7 @@
             <div class="quote-block">
                 <h1>
                     "Je suis disponible pour des projets en freelance ou des collaborations. <br>
-                    <span style="color: var(--highlight-color);">Écrivez-moi directement ici.</span>"
+                    <span style="color: var(--blue-color);">Écrivez-moi directement ici.</span>"
                 </h1>
             </div>
 
@@ -345,7 +451,7 @@
 
                 <div class="form-group">
                     <label for="email" class="label-field">Email</label>
-                    <input type="email" id="email" name="email" class="form-input" placeholder="votre@email.com" required>
+                    <input type="email" id="email" name="email" class="form-input" placeholder="Votre email" required>
                 </div>
 
                 <div class="form-group">
@@ -373,31 +479,61 @@
     </main>
 
     <script>
-        // --- MENU ---
+        // --- GESTION DU MENU CAPSULE ---
         const menuBtn = document.getElementById('menuBtn');
-        const menuOverlay = document.getElementById('menuOverlay');
-        const menuIcon = menuBtn.querySelector('span');
+        const navCapsule = document.getElementById('navCapsule');
+        const menuIcon = document.getElementById('menuIcon');
+        const projectBtn = document.getElementById('projectBtn');
+        const projectSubmenu = document.getElementById('projectSubmenu');
+        
         let isMenuOpen = false;
 
+        // 1. Ouvrir / Fermer le menu
         function toggleMenu() {
             isMenuOpen = !isMenuOpen;
             menuBtn.setAttribute('aria-expanded', isMenuOpen);
-            menuOverlay.setAttribute('aria-hidden', !isMenuOpen);
-
+            navCapsule.setAttribute('aria-hidden', !isMenuOpen);
+            
             if (isMenuOpen) {
-                menuOverlay.classList.add('active');
+                navCapsule.classList.add('active');
                 menuIcon.textContent = 'close';
-                document.body.style.overflow = 'hidden'; 
+                menuBtn.style.backgroundColor = 'rgba(0, 0, 0, 0.1)'; 
             } else {
-                menuOverlay.classList.remove('active');
+                navCapsule.classList.remove('active');
                 menuIcon.textContent = 'menu';
-                document.body.style.overflow = ''; 
+                menuBtn.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+                closeProjects(); 
             }
         }
 
-        menuBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            toggleMenu();
+        // 2. Accordéon Projets
+        function toggleProjects(e) {
+            e.preventDefault(); 
+            const isExpanded = projectBtn.getAttribute('aria-expanded') === 'true';
+            
+            if (!isExpanded) {
+                projectSubmenu.classList.add('open');
+                projectBtn.setAttribute('aria-expanded', 'true');
+                projectBtn.style.color = 'var(--blue-color)';
+            } else {
+                closeProjects();
+            }
+        }
+
+        function closeProjects() {
+            projectSubmenu.classList.remove('open');
+            projectBtn.setAttribute('aria-expanded', 'false');
+            projectBtn.style.color = ''; 
+        }
+
+        // Listeners Menu
+        menuBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleMenu(); });
+        projectBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleProjects(e); });
+        
+        document.addEventListener('click', (e) => {
+            if (isMenuOpen && !navCapsule.contains(e.target) && !menuBtn.contains(e.target)) {
+                toggleMenu();
+            }
         });
 
         // --- STICKERS ---
@@ -483,8 +619,8 @@
         }
 
         document.addEventListener('click', function(e) {
-            // IMPORTANT : Empêcher les stickers de se créer quand on clique dans le formulaire
-            if (e.target.closest('button, a, input, textarea, .menu-overlay')) return;
+            // IMPORTANT : Empêcher les stickers de se créer quand on clique dans le formulaire ou le nouveau menu
+            if (e.target.closest('button, a, input, textarea, .nav-capsule')) return;
             createThreeStickers(e.clientX, e.clientY);
         });
 
