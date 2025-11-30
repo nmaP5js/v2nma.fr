@@ -9,11 +9,7 @@
     <meta property="og:url" content="https://nicolasmarieangelique.fr/">
     <meta property="og:title" content="Nicolas Marie Angelique - Designer UI/UX & 3D">
     <meta property="og:description" content="Découvrez mon portfolio : Design d'interface, Branding et Création 3D.">
-    <meta property="og:image" content="https://nicolasmarieangelique.fr/images/aperçu_img.png"> <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://nicolasmarieangelique.fr/">
-    <meta property="twitter:title" content="Nicolas Marie Angelique - Designer UI/UX">
-    <meta property="twitter:description" content="Découvrez mon portfolio : Design d'interface, Branding et Création 3D.">
-    <meta property="twitter:image" content="https://nicolasmarieangelique.fr/images/aperçu_img.png">
+    <meta property="og:image" content="https://nicolasmarieangelique.fr/images/aperçu_img.png">
     
     <title>Nicolas Marie Angelique - Accueil</title>
     
@@ -26,8 +22,9 @@
         :root {
             --bg-color: #ffffff;
             --text-color: #000000;
-            --highlight-color: #73adff;
+            --highlight-color: #888888;
             --blue-color: #388BFF;
+            --line-color: #e0e0e0;
             --menu-z: 1000;
         }
 
@@ -41,150 +38,206 @@
         body {
             background-color: var(--bg-color);
             color: var(--text-color);
-            height: 100vh;
+            min-height: 100vh;
             width: 100vw;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
+            overflow-x: hidden;
+            overflow-y: auto;
             position: relative;
-            cursor: pointer;
             -webkit-font-smoothing: antialiased;
         }
 
-        /* --- STICKERS --- */
+        /* --- STICKERS (Arrière plan) --- */
         .stickers-container {
-            position: fixed;
-            inset: 0; /* Remplacement moderne de top/left/width/height */
-            pointer-events: none;
-            z-index: 50;
-            overflow: hidden;
+            position: fixed; inset: 0; pointer-events: none; z-index: 1; overflow: hidden;
         }
-
         .sticker {
-            position: absolute;
-            width: 100px;
-            height: 100px;
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
-            opacity: 0;
-            pointer-events: none;
-            transform: scale(0.2) rotate(0deg);
-            /* Optimisation majeure pour la fluidité */
-            will-change: transform, opacity;
+            position: absolute; width: 100px; height: 100px; background-size: contain;
+            background-repeat: no-repeat; background-position: center; opacity: 0;
+            transform: scale(0.2); will-change: transform, opacity;
         }
-
-        /* Animations */
+        /* Animations identiques aux autres pages */
         .sticker.pop-in { animation: popIn 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
         .sticker.zoom-in { animation: zoomIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
         .sticker.spin-in { animation: spinIn 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; }
+        
+        @keyframes popIn { 
+            0% { opacity: 0; transform: scale(0.2) rotate(0deg); } 
+            50% { opacity: 0.8; transform: scale(1.2) rotate(15deg); } 
+            100% { opacity: 1; transform: scale(1) rotate(0deg); } 
+        }
+        @keyframes zoomIn { 
+            0% { opacity: 0; transform: scale(0.1) rotate(-20deg); } 
+            60% { opacity: 0.8; transform: scale(1.3) rotate(10deg); } 
+            100% { opacity: 1; transform: scale(1) rotate(0deg); } 
+        }
+        @keyframes spinIn { 
+            0% { opacity: 0; transform: scale(0.2) rotate(-120deg); } 
+            70% { opacity: 0.7; transform: scale(1.1) rotate(20deg); } 
+            100% { opacity: 1; transform: scale(1) rotate(0deg); } 
+        }
 
-        @keyframes popIn {
-            0% { opacity: 0; transform: scale(0.2) rotate(0deg); }
-            50% { opacity: 0.8; transform: scale(1.2) rotate(15deg); }
-            80% { transform: scale(0.9) rotate(-5deg); }
-            100% { opacity: 1; transform: scale(1) rotate(0deg); }
-        }
-        @keyframes zoomIn {
-            0% { opacity: 0; transform: scale(0.1) rotate(-20deg); }
-            60% { opacity: 0.8; transform: scale(1.3) rotate(10deg); }
-            100% { opacity: 1; transform: scale(1) rotate(0deg); }
-        }
-        @keyframes spinIn {
-            0% { opacity: 0; transform: scale(0.2) rotate(-120deg); }
-            70% { opacity: 0.7; transform: scale(1.1) rotate(20deg); }
-            100% { opacity: 1; transform: scale(1) rotate(0deg); }
-        }
-
-        /* --- MENU --- */
+        /* --- BOUTON MENU --- */
         .menu-btn {
-            position: fixed;
-            top: 30px;
-            right: 30px;
-            z-index: calc(var(--menu-z) + 1);
-            cursor: pointer;
-            width: 50px;
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: transform 0.3s ease, background-color 0.3s ease;
-            background-color: rgba(255, 255, 255, 0.1); 
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-radius: 50%;
-            border: none; /* Reset button */
-            color: var(--text-color);
+            position: fixed; top: 30px; right: 30px; z-index: calc(var(--menu-z) + 1); cursor: pointer;
+            width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;
+            background-color: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px);
+            border-radius: 50%; border: none; color: var(--text-color);
+            transition: transform 0.3s;
+        }
+        .menu-btn:hover { transform: scale(1.1); background-color: rgba(0,0,0,0.05); }
+        .menu-btn .material-symbols-outlined { font-size: 30px; }
+
+        /* --- MENU CAPSULE --- */
+        .nav-capsule {
+            position: fixed; top: 90px; right: 30px; width: 260px;
+            background-color: rgba(255, 255, 255, 0.3); backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.6); border-radius: 24px; padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); z-index: var(--menu-z);
+            opacity: 0; visibility: hidden; transform: translateY(-10px) scale(0.95);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .nav-capsule.active { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+        .capsule-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+        .capsule-link {
+            display: flex; justify-content: space-between; align-items: center; width: 100%;
+            text-decoration: none; color: var(--text-color); font-size: 1.1rem; font-weight: 500;
+            padding: 10px 15px; border-radius: 12px; transition: background 0.2s; cursor: pointer;
+            background: none; border: none; text-align: left;
+        }
+        .capsule-link:hover { background-color: rgba(255,255,255,0.5); color: var(--blue-color); }
+        .chevron { font-size: 1.2rem; transition: transform 0.3s; }
+        .project-trigger[aria-expanded="true"] .chevron { transform: rotate(180deg); }
+        .submenu { list-style: none; margin-left: 15px; max-height: 0; overflow: hidden; transition: max-height 0.4s; }
+        .submenu.open { max-height: 200px; margin-top: 5px; margin-bottom: 5px; }
+        .submenu li a { display: block; text-decoration: none; color: #666; font-size: 0.95rem; padding: 8px 15px; transition: color 0.2s; }
+        .submenu li a:hover { color: var(--blue-color); transform: translateX(5px); }
+        .submenu .all-projects { font-weight: 600; color: var(--text-color); font-size: 0.85rem; margin-top: 5px; text-transform: uppercase; }
+
+        /* --- HERO SECTION --- */
+        .hero-section {
+            width: 100%; 
+            height: 90vh; 
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center; position: relative; z-index: 0;
+        }
+        .logo-container { 
+            width: 80%; 
+            max-width: 450px; 
+            pointer-events: none; 
+        }
+        .logo-svg { width: 100%; height: auto; }
+
+        /* --- TABLEAU LISTE PROJETS --- */
+        .project-list-section {
+            width: 100%;
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 40px 150px 40px;
+            position: relative;
+            z-index: 2;
         }
 
-        .menu-btn .material-symbols-outlined { font-size: 28px; }
-        .menu-btn:hover { transform: scale(1.1); background-color: rgba(0, 0, 0, 0.05); }
-
-        /* --- OVERLAY MENU --- */
-        .menu-overlay {
-            position: fixed;
-            inset: 0;
-            background-color: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            z-index: var(--menu-z);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 40px;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.4s ease, visibility 0.4s ease;
-            will-change: opacity, visibility;
+        .list-header {
+            display: grid;
+            grid-template-columns: 2fr 1.5fr 0.5fr; 
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--text-color);
+            margin-bottom: 0;
         }
 
-        .menu-overlay.active { opacity: 1; visibility: visible; }
+        .col-header {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--highlight-color);
+            font-weight: 600;
+        }
 
-        .menu-link {
-            font-size: 3rem;
-            font-weight: 500;
+        .project-row {
+            display: grid;
+            grid-template-columns: 2fr 1.5fr 0.5fr;
+            padding: 35px 0;
+            border-bottom: 1px solid var(--line-color);
             text-decoration: none;
             color: var(--text-color);
-            transition: color 0.3s ease;
+            transition: border-color 0.3s ease;
+            position: relative;
+            align-items: baseline;
             cursor: pointer;
         }
-        .menu-link:hover { color: var(--blue-color); }
 
-        /* --- CONTENU PRINCIPAL --- */
-        .main-content {
+        .project-row:hover {
+            border-bottom: 1px solid var(--blue-color);
+        }
+
+        .p-title {
+            font-size: 2.5rem;
+            font-weight: 500;
+            margin: 0;
+            line-height: 1;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .p-role {
+            font-size: 1.1rem;
+            color: var(--highlight-color);
+            font-weight: 400;
+            transition: color 0.3s ease;
+        }
+
+        .p-year {
+            font-size: 1.1rem;
+            text-align: right;
+            font-feature-settings: "tnum" on, "lnum" on;
+        }
+
+        .project-row:hover .p-title { color: var(--blue-color); transform: translateX(10px); }
+        .project-row:hover .p-role { color: var(--text-color); }
+
+        /* --- PREVIEW FLOTTANTE --- */
+        .cursor-preview {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 300px;
+            height: 200px;
+            z-index: 500;
+            pointer-events: none;
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.8);
+            transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+        }
+
+        .cursor-preview.active {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .cursor-preview img {
             width: 100%;
             height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            z-index: 1;
-            pointer-events: none;
+            object-fit: cover;
+            display: block;
         }
 
-        .logo-container {
-            width: 80%;
-            max-width: 600px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            pointer-events: none;
-        }
-        
-        .logo-svg {
-            width: 100%; /* Optimisé pour remplir le conteneur */
-            height: auto;
-        }
-
-        @media (max-width: 600px) {
-            .menu-link { font-size: 2rem; }
-            .menu-btn { top: 20px; right: 20px; }
-        }
+        /* --- RESPONSIVE MOBILE --- */
+    @media (max-width: 600px) {
+        .nav-capsule { right: 20px; width: calc(100% - 40px); }
+        .menu-btn { top: 20px; right: 20px; }
+        .hero-section { height: 90vh; }
+        .logo-container { width: 75%; max-width: 350px; }
+        .project-list-section { padding: 0 20px 100px 20px; }
+    }
     </style>
 </head>
 <body>
+
+    <div class="cursor-preview" id="cursorPreview">
+        <img src="" alt="Preview" id="previewImage">
+    </div>
 
     <div class="stickers-container" id="stickersContainer" aria-hidden="true"></div>
 
@@ -192,17 +245,29 @@
         <span class="material-symbols-outlined" id="menuIcon">menu</span>
     </button>
 
-    <nav class="menu-overlay" id="menuOverlay" aria-hidden="true">
-        <a href="index.html" class="menu-link">Accueil</a>
-        <a href="project.html" class="menu-link">Projets</a>
-        <a href="about.html" class="menu-link">À Propos</a>
-        <a href="contact.html" class="menu-link">Contact</a>
+    <nav class="nav-capsule" id="navCapsule" aria-hidden="true">
+        <ul class="capsule-list">
+            <li><a href="index.html" class="capsule-link">Accueil</a></li>
+            <li class="has-submenu">
+                <button class="capsule-link project-trigger" id="projectBtn" aria-expanded="false">
+                    Projets 
+                    <span class="material-symbols-outlined chevron">expand_more</span>
+                </button>
+                <ul class="submenu" id="projectSubmenu">
+                    <li><a href="enjoytheride.html">Enjoy The Ride</a></li>
+                    <li><a href="trinityringcartier.html">Cartier Trinity Ring</a></li>
+                    <li><a href="cgivisual.html">CGI Visual</a></li>
+                    <li><a href="project.html" class="all-projects">Voir tout →</a></li>
+                </ul>
+            </li>
+            <li><a href="about.html" class="capsule-link">À Propos</a></li>
+            <li><a href="contact.html" class="capsule-link">Contact</a></li>
+        </ul>
     </nav>
 
-    <main class="main-content">
+    <header class="hero-section">
         <div class="logo-container">
-            <svg class="logo-svg" viewBox="0 0 1286 641" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="logoTitle">
-                <title id="logoTitle">Logo Nicolas Marie Angelique</title>
+            <svg class="logo-svg" viewBox="0 0 1286 641" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M144 0H1142V229H144V0Z" fill="#0045A6"/>
                 <path d="M288 208H998V431H288V208Z" fill="#0045A6"/>
                 <path d="M0 403H1286V641H0V403Z" fill="#0045A6"/>
@@ -229,40 +294,146 @@
                 <path d="M1140.06 616V429.75H1256.94V453.875H1168.19V510H1250.69V534H1168.19V591.875H1257.81V616H1140.06Z" fill="#3C8DFF"/>
             </svg>
         </div>
-    </main>
+    </header>
+
+    <section class="project-list-section">
+        
+        <div class="list-header">
+            <span class="col-header">Projet</span>
+            <span class="col-header">Expertise</span>
+            <span class="col-header" style="text-align: right;">Année</span>
+        </div>
+
+        <a href="imageia.html" class="project-row" data-image="./images/iapreview.webp">
+            <span class="p-title">Image Gen IA</span>
+            <span class="p-role">Expérience IA</span>
+            <span class="p-year">2024</span>
+        </a>
+
+        <a href="data_viz.html" class="project-row" data-image="./images/dataviz.webp">
+            <span class="p-title">DATA_VIZ</span>
+            <span class="p-role">Data Visualisation</span>
+            <span class="p-year">2024</span>
+        </a>
+
+        <a href="trinityringcartier.html" class="project-row" data-image="./gif/CleanShot May 5 2025 GIF from ezgif.gif">
+            <span class="p-title">Trinity Ring</span>
+            <span class="p-role">Publicité / 3D</span>
+            <span class="p-year">2024</span>
+        </a>
+
+        <a href="ptitchef.html" class="project-row" data-image="./images/miw.webp">
+            <span class="p-title">Made In Work</span>
+            <span class="p-role">Branding / Web</span>
+            <span class="p-year">2024</span>
+        </a>
+
+        <a href="budl.html" class="project-row" data-image="./images/budl1.webp">
+            <span class="p-title">BUDL</span>
+            <span class="p-role">Design de service</span>
+            <span class="p-year">2023</span>
+        </a>
+
+        <a href="enjoytheride.html" class="project-row" data-image="./gif/LOGOSPIN.gif">
+            <span class="p-title">Enjoy The Ride</span>
+            <span class="p-role">Branding / UI-UX</span>
+            <span class="p-year">2023</span>
+        </a>
+
+        <a href="cltwinter.html" class="project-row" data-image="./images/cal2022.webp">
+            <span class="p-title">CLT Winter Calendar</span>
+            <span class="p-role">Direction Artistique</span>
+            <span class="p-year">2023</span>
+        </a>
+
+        <a href="cgivisual.html" class="project-row" data-image="./images/nox1.webp">
+            <span class="p-title">CGI Visual</span>
+            <span class="p-role">Motion / 3D</span>
+            <span class="p-year">2023</span>
+        </a>
+
+    </section>
 
     <script>
-    // --- GESTION DU MENU ---
+    // --- MENU ---
     const menuBtn = document.getElementById('menuBtn');
-    const menuOverlay = document.getElementById('menuOverlay');
+    const navCapsule = document.getElementById('navCapsule');
     const menuIcon = document.getElementById('menuIcon');
+    const projectBtn = document.getElementById('projectBtn');
+    const projectSubmenu = document.getElementById('projectSubmenu');
     let isMenuOpen = false;
 
     function toggleMenu() {
         isMenuOpen = !isMenuOpen;
         menuBtn.setAttribute('aria-expanded', isMenuOpen);
-        menuOverlay.setAttribute('aria-hidden', !isMenuOpen);
-        
         if (isMenuOpen) {
-            menuOverlay.classList.add('active');
+            navCapsule.classList.add('active');
             menuIcon.textContent = 'close';
+            menuBtn.style.backgroundColor = 'rgba(0,0,0,0.1)';
         } else {
-            menuOverlay.classList.remove('active');
+            navCapsule.classList.remove('active');
             menuIcon.textContent = 'menu';
+            menuBtn.style.backgroundColor = 'rgba(255,255,255,0.1)';
+            closeProjects();
         }
     }
 
-    menuBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        toggleMenu();
+    function toggleProjects(e) {
+        e.preventDefault(); 
+        const isExpanded = projectBtn.getAttribute('aria-expanded') === 'true';
+        if (!isExpanded) {
+            projectSubmenu.classList.add('open');
+            projectBtn.setAttribute('aria-expanded', 'true');
+            projectBtn.style.color = 'var(--blue-color)';
+        } else {
+            closeProjects();
+        }
+    }
+
+    function closeProjects() {
+        projectSubmenu.classList.remove('open');
+        projectBtn.setAttribute('aria-expanded', 'false');
+        projectBtn.style.color = ''; 
+    }
+
+    menuBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleMenu(); });
+    projectBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleProjects(e); });
+    document.addEventListener('click', (e) => { if (isMenuOpen && !navCapsule.contains(e.target)) toggleMenu(); });
+
+    // --- CURSOR PREVIEW LOGIC ---
+    const cursorPreview = document.getElementById('cursorPreview');
+    const previewImage = document.getElementById('previewImage');
+    const projectRows = document.querySelectorAll('.project-row');
+
+    // Suivi de la souris
+    document.addEventListener('mousemove', (e) => {
+        // Preview Image (avec un petit délai pour la fluidité)
+        // On centre l'image sur le curseur
+        cursorPreview.style.left = e.clientX + 'px';
+        cursorPreview.style.top = e.clientY + 'px';
     });
 
-    // --- GESTION DES STICKERS ---
+    // Affichage au survol des lignes
+    projectRows.forEach(row => {
+        row.addEventListener('mouseenter', () => {
+            const imgUrl = row.getAttribute('data-image');
+            if (imgUrl) {
+                previewImage.src = imgUrl;
+                cursorPreview.classList.add('active');
+            }
+        });
+
+        row.addEventListener('mouseleave', () => {
+            cursorPreview.classList.remove('active');
+        });
+    });
+
+    // --- STICKERS BACKGROUND (Restored complex logic) ---
     const stickerConfig = {
         basePath: "stickers/", 
         stickers: ["sticker1.png", "sticker2.png", "sticker3.png", "sticker4.png", "sticker5.png"],
         maxStickers: 100, 
-        displayTime: 60000,
+        displayTime: 60000, 
         stickerSize: { min: 60, max: 200 }, 
         randomPositionMargin: 60,
         animations: ["pop-in", "zoom-in", "spin-in"]
@@ -276,20 +447,20 @@
     }
 
     function getRandomPosition() {
+        // Utilisation de scrollWidth/Height pour couvrir toute la page même si on scroll
+        const w = document.documentElement.scrollWidth;
+        const h = document.documentElement.scrollHeight;
         const margin = stickerConfig.randomPositionMargin;
-        // Utilisation de innerWidth/Height pour éviter les problèmes de scroll
         return {
-            x: getRandomNumber(margin, window.innerWidth - margin),
-            y: getRandomNumber(margin, window.innerHeight - margin)
+            x: getRandomNumber(margin, w - margin),
+            y: getRandomNumber(margin, h - margin)
         };
     }
 
     function createSticker(x, y, isRandom = false, delay = 0) {
         if (activeStickers.length >= stickerConfig.maxStickers) {
             const oldestSticker = activeStickers.shift();
-            if (oldestSticker) {
-                oldestSticker.remove(); // Méthode moderne plus propre
-            }
+            if (oldestSticker) oldestSticker.remove();
         }
         
         const sticker = document.createElement('div');
@@ -299,23 +470,22 @@
         sticker.className = `sticker ${animationClass}`;
         sticker.style.backgroundImage = `url('${stickerConfig.basePath + stickerConfig.stickers[randomStickerIndex]}')`;
         
-        sticker.style.left = `${x}px`;
-        sticker.style.top = `${y}px`;
+        // Position absolue tenant compte du scroll si clic manuel
+        let posX = isRandom ? x : (x + window.pageXOffset);
+        let posY = isRandom ? y : (y + window.pageYOffset);
+
+        sticker.style.left = `${posX}px`;
+        sticker.style.top = `${posY}px`;
         
         const size = getRandomNumber(stickerConfig.stickerSize.min, stickerConfig.stickerSize.max);
         sticker.style.width = `${size}px`;
         sticker.style.height = `${size}px`;
-        
-        // Rotation aléatoire
         sticker.style.transform = `scale(0.2) rotate(${getRandomNumber(-30, 30)}deg)`;
-        
-        // Délai d'animation si nécessaire (géré par CSS/JS combo)
         sticker.style.animationDelay = `${delay}ms`;
         
         stickersContainer.appendChild(sticker);
         activeStickers.push(sticker);
         
-        // Nettoyage automatique
         const lifeTime = isRandom 
             ? stickerConfig.displayTime + getRandomNumber(-1000, 1000) 
             : stickerConfig.displayTime;
@@ -323,10 +493,9 @@
         setTimeout(() => {
             if (sticker.parentNode) {
                 sticker.style.opacity = 0;
-                sticker.style.transform = 'scale(0.2)'; // Effet de départ
+                sticker.style.transform = 'scale(0.2)'; 
                 setTimeout(() => {
                     sticker.remove();
-                    // On nettoie le tableau sans créer de nouvelle allocation mémoire coûteuse
                     const index = activeStickers.indexOf(sticker);
                     if (index > -1) activeStickers.splice(index, 1);
                 }, 500);
@@ -342,14 +511,14 @@
         createSticker(p2.x, p2.y, true, 300); 
     }
 
-    // Écouteur global optimisé
     document.addEventListener('click', (e) => {
-        if (e.target.closest('button, a, .menu-overlay')) return;
+        // Empêche de créer des stickers si on clique sur un lien ou le menu
+        if (e.target.closest('button, a, .nav-capsule, .work-card, .project-row')) return;
         createThreeStickers(e.clientX, e.clientY);
     });
 
-    // Init
     window.addEventListener('load', () => {
+        // Stickers initiaux aléatoires sur toute la hauteur
         for (let i = 0; i < 3; i++) {
             const p = getRandomPosition();
             createSticker(p.x, p.y, true, i * 200);
