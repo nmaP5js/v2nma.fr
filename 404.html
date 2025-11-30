@@ -70,50 +70,6 @@
         @keyframes zoomIn { 0% { opacity: 0; transform: scale(0.1); } 60% { opacity: 0.8; transform: scale(1.3); } 100% { opacity: 1; transform: scale(1); } }
         @keyframes spinIn { 0% { opacity: 0; transform: scale(0.2) rotate(-120deg); } 70% { opacity: 0.7; transform: scale(1.1); } 100% { opacity: 1; transform: scale(1); } }
 
-        /* --- MENU --- */
-        .menu-btn {
-            position: fixed;
-            top: 30px;
-            right: 30px;
-            z-index: calc(var(--menu-z) + 1);
-            cursor: pointer;
-            width: 50px;
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: transform 0.3s ease, background-color 0.3s ease;
-            background-color: rgba(255, 255, 255, 0.1); 
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-radius: 50%;
-            border: none;
-            color: var(--text-color);
-        }
-        .menu-btn:hover { transform: scale(1.1); background-color: rgba(0, 0, 0, 0.05); }
-        .menu-btn .material-symbols-outlined { font-size: 28px; }
-
-        /* --- OVERLAY MENU --- */
-        .menu-overlay {
-            position: fixed;
-            inset: 0;
-            background-color: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            z-index: var(--menu-z);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 40px;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.4s ease, visibility 0.4s ease;
-        }
-        .menu-overlay.active { opacity: 1; visibility: visible; }
-        .menu-link { font-size: 3rem; font-weight: 500; text-decoration: none; color: var(--text-color); transition: color 0.3s; }
-        .menu-link:hover { color: var(--blue-color); }
-
         /* --- CONTENU 404 --- */
         .error-content {
             position: relative;
@@ -169,18 +125,6 @@
 <body>
 
     <div class="stickers-container" id="stickersContainer" aria-hidden="true"></div>
-
-    <button class="menu-btn" id="menuBtn" aria-label="Ouvrir le menu" aria-expanded="false">
-        <span class="material-symbols-outlined" id="menuIcon">menu</span>
-    </button>
-
-    <nav class="menu-overlay" id="menuOverlay" aria-hidden="true">
-        <a href="index.html" class="menu-link">Accueil</a>
-        <a href="project.html" class="menu-link">Projets</a>
-        <a href="about.html" class="menu-link">À Propos</a>
-        <a href="contact.html" class="menu-link">Contact</a>
-    </nav>
-
     <main class="error-content">
         <h1 class="error-title">404</h1>
         <p class="error-subtitle">Oups ! Cette page s'est perdue dans mes projets.</p>
@@ -188,26 +132,6 @@
     </main>
 
     <script>
-        // --- MENU ---
-        const menuBtn = document.getElementById('menuBtn');
-        const menuOverlay = document.getElementById('menuOverlay');
-        const menuIcon = document.getElementById('menuIcon');
-        let isMenuOpen = false;
-
-        function toggleMenu() {
-            isMenuOpen = !isMenuOpen;
-            menuBtn.setAttribute('aria-expanded', isMenuOpen);
-            menuOverlay.setAttribute('aria-hidden', !isMenuOpen);
-            if (isMenuOpen) {
-                menuOverlay.classList.add('active');
-                menuIcon.textContent = 'close';
-            } else {
-                menuOverlay.classList.remove('active');
-                menuIcon.textContent = 'menu';
-            }
-        }
-        menuBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleMenu(); });
-
         // --- STICKERS (Même script que l'accueil pour la cohérence) ---
         const stickerConfig = {
             basePath: "stickers/", 
