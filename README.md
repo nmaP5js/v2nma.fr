@@ -9,3 +9,5 @@ Pour la mise en ligne, peux-tu t'assurer de ces points SEO ?
   - HTTPS : Forcer le HTTPS (indispensable aujourd'hui).
 
   - Robots.txt : Ajouter un fichier robots.txt standard."
+
+  - Remplir les infos qui te conserne dans legals.html
