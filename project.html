@@ -4,12 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Projets et réalisations de Nicolas Marie Angelique - Designer UI/UX, 3D et Graphique.">
-   
+    
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://nicolasmarieangelique.fr/">
     <meta property="og:title" content="Nicolas Marie Angelique - Designer UI/UX & 3D">
     <meta property="og:description" content="Découvrez mon portfolio : Design d'interface, Branding et Création 3D.">
-    <meta property="og:image" content="https://nicolasmarieangelique.fr/images/aperçu_img.png"> <meta property="twitter:card" content="summary_large_image">
+    <meta property="og:image" content="https://nicolasmarieangelique.fr/images/aperçu_img.png"> 
+    
+    <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://nicolasmarieangelique.fr/">
     <meta property="twitter:title" content="Nicolas Marie Angelique - Designer UI/UX">
     <meta property="twitter:description" content="Découvrez mon portfolio : Design d'interface, Branding et Création 3D.">
@@ -49,7 +51,7 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* --- MENU --- */
+        /* --- BOUTON MENU --- */
         .menu-btn {
             position: fixed;
             top: 30px;
@@ -66,43 +68,124 @@
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             border-radius: 50%;
-            border: none; /* Reset button */
+            border: none;
             color: var(--text-color);
         }
 
         .menu-btn:hover { transform: scale(1.1); background-color: rgba(0, 0, 0, 0.05); }
-        .menu-btn .material-symbols-outlined { font-size: 28px; }
+        .menu-btn .material-symbols-outlined { font-size: 30px; }
 
-        /* --- OVERLAY MENU --- */
-        .menu-overlay {
+        /* --- MENU CAPSULE (NOUVEAU MENU) --- */
+        .nav-capsule {
             position: fixed;
-            inset: 0; /* Remplace top/left/width/height */
-            background-color: rgba(255, 255, 255, 0.701);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
+            top: 90px;
+            right: 30px;
+            width: 260px;
+            
+            /* Effet Verre Dépoli */
+            background-color: rgba(255, 255, 255, 0.3); /* Transparence élevée */
+            backdrop-filter: blur(25px); /* Flou puissant */
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.6); /* Bordure subtile */
+            
+            border-radius: 24px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
             z-index: var(--menu-z);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 40px;
+            
+            /* Animation d'entrée */
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.4s ease, visibility 0.4s ease;
-            will-change: opacity, visibility;
+            transform: translateY(-10px) scale(0.95);
+            transform-origin: top right;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .menu-overlay.active { opacity: 1; visibility: visible; }
+        .nav-capsule.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+        }
 
-        .menu-link {
-            font-size: 3rem;
-            font-weight: 500;
+        .capsule-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        /* Liens principaux du menu */
+        .capsule-link {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             text-decoration: none;
             color: var(--text-color);
-            transition: color 0.3s ease;
+            font-size: 1.1rem;
+            font-weight: 500;
+            padding: 10px 15px;
+            border-radius: 12px;
+            transition: background-color 0.2s ease, color 0.2s ease;
             cursor: pointer;
+            background: none;
+            border: none;
+            width: 100%;
+            text-align: left;
+            font-family: 'Inter Tight', sans-serif; /* Assure la police sur le bouton */
         }
-        .menu-link:hover { color: var(--blue-color); }
+
+        .capsule-link:hover {
+            background-color: rgba(255, 255, 255, 0.5); /* Feedback blanc semi-op */
+            color: var(--blue-color);
+        }
+
+        /* Gestion du sous-menu Projets */
+        .chevron {
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .project-trigger[aria-expanded="true"] .chevron {
+            transform: rotate(180deg);
+        }
+
+        .submenu {
+            list-style: none;
+            margin-left: 15px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            border-left: 2px solid rgba(0,0,0,0.05);
+        }
+
+        .submenu.open {
+            max-height: 200px;
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+
+        .submenu li a {
+            display: block;
+            text-decoration: none;
+            color: #666;
+            font-size: 0.95rem;
+            padding: 8px 15px;
+            transition: color 0.2s ease, transform 0.2s ease;
+        }
+
+        .submenu li a:hover {
+            color: var(--blue-color);
+            transform: translateX(5px);
+        }
+
+        .submenu .all-projects {
+            font-weight: 600;
+            color: var(--text-color);
+            font-size: 0.85rem;
+            margin-top: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
 
         /* --- LAYOUT PRINCIPAL --- */
         .main-content {
@@ -154,7 +237,10 @@
 
         /* Interactions Liste */
         .simple-item:hover .item-title { color: var(--blue-color); }
+        
+        /* RÈGLE RESTAURÉE POUR DESKTOP UNIQUEMENT */
         .simple-list:hover .simple-item:not(:hover) { opacity: 0.3; }
+
 
         /* Colonne Droite : Preview Fixe */
         .preview-column {
@@ -233,15 +319,27 @@
 
         /* --- RESPONSIVE --- */
         @media (max-width: 900px) {
+            
+            /* RÈGLE AJOUTÉE : Annule l'effet de dimming sur mobile/tablette */
+            .simple-list:hover .simple-item:not(:hover) { 
+                opacity: 1; 
+            }
+
             .projects-column { width: 100%; padding: 100px 40px; }
             .preview-column { display: none; }
             .item-title { font-size: 3rem; }
         }
 
+        @media (max-width: 600px) {
+            .nav-capsule {
+                right: 20px;
+                width: calc(100% - 40px);
+            }
+        }
+
         @media (max-width: 480px) {
             .projects-column { padding: 80px 20px; }
             .item-title { font-size: 2.2rem; }
-            .menu-link { font-size: 2rem; }
             .menu-btn { top: 20px; right: 20px; }
         }
     </style>
@@ -254,11 +352,26 @@
         <span class="material-symbols-outlined" id="menuIcon">menu</span>
     </button>
 
-    <nav class="menu-overlay" id="menuOverlay" aria-hidden="true">
-        <a href="index.html" class="menu-link">Accueil</a>
-        <a href="project.html" class="menu-link">Projets</a>
-        <a href="about.html" class="menu-link">À Propos</a>
-        <a href="contact.html" class="menu-link">Contact</a>
+    <nav class="nav-capsule" id="navCapsule" aria-hidden="true">
+        <ul class="capsule-list">
+            <li><a href="index.html" class="capsule-link">Accueil</a></li>
+            
+            <li class="has-submenu">
+                <button class="capsule-link project-trigger" id="projectBtn" aria-expanded="false">
+                    Projets 
+                    <span class="material-symbols-outlined chevron">expand_more</span>
+                </button>
+                <ul class="submenu" id="projectSubmenu">
+                    <li><a href="enjoytheride.html">Enjoy The Ride</a></li>
+                    <li><a href="trinityringcartier.html">Cartier Trinity Ring</a></li>
+                    <li><a href="cgivisual.html">CGI Visual</a></li>
+                    <li><a href="project.html" class="all-projects">Voir tout →</a></li>
+                </ul>
+            </li>
+
+            <li><a href="about.html" class="capsule-link">À Propos</a></li>
+            <li><a href="contact.html" class="capsule-link">Contact</a></li>
+        </ul>
     </nav>
 
     <main class="main-content">
@@ -316,31 +429,69 @@
     </main>
 
     <script>
-    // --- 1. GESTION DU MENU ---
+    // --- 1. GESTION DU MENU CAPSULE ---
     const menuBtn = document.getElementById('menuBtn');
-    const menuOverlay = document.getElementById('menuOverlay');
+    const navCapsule = document.getElementById('navCapsule');
     const menuIcon = document.getElementById('menuIcon');
+    const projectBtn = document.getElementById('projectBtn');
+    const projectSubmenu = document.getElementById('projectSubmenu');
+    
     let isMenuOpen = false;
 
+    // 1. Ouvrir / Fermer la capsule principale
     function toggleMenu() {
         isMenuOpen = !isMenuOpen;
         menuBtn.setAttribute('aria-expanded', isMenuOpen);
-        menuOverlay.setAttribute('aria-hidden', !isMenuOpen);
-
+        navCapsule.setAttribute('aria-hidden', !isMenuOpen);
+        
         if (isMenuOpen) {
-            menuOverlay.classList.add('active');
+            navCapsule.classList.add('active');
             menuIcon.textContent = 'close';
-            document.body.style.overflow = 'hidden';
+            menuBtn.style.backgroundColor = 'rgba(0, 0, 0, 0.1)'; 
         } else {
-            menuOverlay.classList.remove('active');
+            navCapsule.classList.remove('active');
             menuIcon.textContent = 'menu';
-            document.body.style.overflow = '';
+            menuBtn.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+            closeProjects(); // Referme les projets quand on ferme le menu
         }
     }
 
+    // 2. Ouvrir / Fermer la liste des projets (Accordéon)
+    function toggleProjects(e) {
+        e.preventDefault(); 
+        const isExpanded = projectBtn.getAttribute('aria-expanded') === 'true';
+        
+        if (!isExpanded) {
+            projectSubmenu.classList.add('open');
+            projectBtn.setAttribute('aria-expanded', 'true');
+            projectBtn.style.color = 'var(--blue-color)';
+        } else {
+            closeProjects();
+        }
+    }
+
+    function closeProjects() {
+        projectSubmenu.classList.remove('open');
+        projectBtn.setAttribute('aria-expanded', 'false');
+        projectBtn.style.color = ''; 
+    }
+
+    // Listeners
     menuBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         toggleMenu();
+    });
+
+    projectBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleProjects(e);
+    });
+
+    document.addEventListener('click', (e) => {
+        // Ferme le menu si clic à l'extérieur
+        if (isMenuOpen && !navCapsule.contains(e.target) && !menuBtn.contains(e.target)) {
+            toggleMenu();
+        }
     });
 
     // --- 2. GESTION DE LA PREVIEW FIXE + PRÉCHARGEMENT ---
@@ -457,8 +608,9 @@
     }
 
     document.addEventListener('click', function(e) {
+        // Adaptation : Ne pas créer de sticker si on clique sur le menu capsule ou le bouton
         if (e.target.closest('.menu-btn') || 
-            e.target.closest('.menu-overlay') || 
+            e.target.closest('.nav-capsule') || 
             e.target.closest('.simple-item')) {
             return;
         }
